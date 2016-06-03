@@ -1,0 +1,19 @@
+{
+  "name": "Library",
+  "authors": [
+    "Jakub Tuček <jakub.tucek@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/main/java/resources/static/components",
+    "test",
+    "tests"
+  ]
+}
