@@ -11,6 +11,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
@@ -21,7 +23,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @ConditionalOnClass({SpringTemplateEngine.class})
 @EnableConfigurationProperties({ThymeleafProperties.class})  //no sense rolling our own.
 @AutoConfigureAfter({WebMvcAutoConfiguration.class})
-public class ThymeleafConfig implements ApplicationContextAware {
+public class ThymeleafConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
@@ -35,16 +37,15 @@ public class ThymeleafConfig implements ApplicationContextAware {
     @Bean
     public ViewResolver viewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-        resolver.setOrder(2147483642);
         resolver.setTemplateEngine(templateEngine());
         resolver.setCharacterEncoding("UTF-8");
         return resolver;
     }
 
     @Bean
-    //made this @Bean (vs private in Thymeleaf migration docs ), otherwise MessageSource wasn't autowired.
     public TemplateEngine templateEngine() {
         SpringTemplateEngine engine = new SpringTemplateEngine();
+        engine.setEnableSpringELCompiler(true);
         engine.setTemplateResolver(templateResolver());
         return engine;
     }
@@ -59,5 +60,15 @@ public class ThymeleafConfig implements ApplicationContextAware {
         return resolver;
     }
 
-
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        super.addViewControllers(registry);
+        registry.addViewController("/home").setViewName("home");
+        registry.addViewController("/").setViewName("home");
+        registry.addViewController("").setViewName("home");
+        registry.addViewController("/users").setViewName("user");
+        registry.addViewController("/items").setViewName("item");
+      /*  registry.addViewController("/hello").setViewName("hello");
+        registry.addViewController("/login").setViewName("login");*/
+    }
 }

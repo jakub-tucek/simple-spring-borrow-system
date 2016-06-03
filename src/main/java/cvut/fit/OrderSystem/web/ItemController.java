@@ -1,6 +1,8 @@
 package cvut.fit.ordersystem.web;
 
+import cvut.fit.ordersystem.domain.entity.Book;
 import cvut.fit.ordersystem.domain.entity.Item;
+import cvut.fit.ordersystem.service.BookManager;
 import cvut.fit.ordersystem.service.ItemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,19 +28,23 @@ public class ItemController {
     @Autowired
     ItemManager itemManager;
 
+
+    @Autowired
+    BookManager bookManager;
+
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public void getItems(Model model) {
-        // itemManager.deleteAll();
-        // itemManager.insert(new Item("Super cool test item", 55));
-        model.addAttribute("items", itemManager.findAll());
         model.addAttribute("itemSeed", new Item());
-
+        model.addAttribute("items", itemManager.findAll());
+        model.addAttribute("bookSeed", new Book());
+        model.addAttribute("books", bookManager.findAll());
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String addItem(@ModelAttribute("itemSeed") Item item, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("itemName", item.getItemName());
-        model.addAttribute("age", item.getCount());
+        model.addAttribute("count", item.getCount());
 
         if (itemManager.isItemNameUsed(item.getItemName())) {
             model.addAttribute("items", itemManager.findAll());
@@ -50,6 +56,24 @@ public class ItemController {
             redirectAttributes.addFlashAttribute("message", "Successfully added.");
             itemManager.insert(item);
         }
+        return "redirect:/items";
+    }
+
+    @RequestMapping(value = "addBook", method = RequestMethod.POST)
+    public String addItem(@ModelAttribute("bookSeed") Book book, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("itemName", book.getItemName());
+        model.addAttribute("count", book.getCount());
+
+        if (bookManager.isItemNameUsed(book.getItemName())) {
+            model.addAttribute("books", bookManager.findAll());
+            result.rejectValue("itemName", "bookName.novalid", "Book name used");
+            return "books";
+        } else {
+            redirectAttributes.addFlashAttribute("type", "success");
+            redirectAttributes.addFlashAttribute("message", "Successfully added");
+            bookManager.insert(book);
+        }
+
         return "redirect:/items";
     }
 
