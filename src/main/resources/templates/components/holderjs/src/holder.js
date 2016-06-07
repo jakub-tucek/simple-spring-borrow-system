@@ -301,7 +301,7 @@
      *
      * @private
      * @param options Instance options from Holder.run
-     * @param renderSettings Instance config
+     * @param renderSettings Instance configuration
      * @param src Image URL
      * @param el Image DOM element
      */
@@ -396,8 +396,8 @@
      *
      * @private
      * @param el Image DOM element
-     * @param flags Placeholder-specific config
-     * @param _renderSettings Instance config
+     * @param flags Placeholder-specific configuration
+     * @param _renderSettings Instance configuration
      */
     function prepareDOMElement(mode, el, flags, _renderSettings) {
         var dimensions = flags.dimensions,
@@ -520,7 +520,7 @@
      * @param mode Placeholder mode, either background or image
      * @param params Placeholder-specific parameters
      * @param el Image DOM element
-     * @param renderSettings Instance config
+     * @param renderSettings Instance configuration
      */
 
     function render(mode, params, el, renderSettings) {
