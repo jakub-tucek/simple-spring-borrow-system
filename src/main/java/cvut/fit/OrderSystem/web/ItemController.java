@@ -59,7 +59,7 @@ public class ItemController {
         return "redirect:/items";
     }
 
-    @RequestMapping(value = "addBook", method = RequestMethod.POST)
+    @RequestMapping(value = "book", method = RequestMethod.POST)
     public String addItem(@ModelAttribute("bookSeed") Book book, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("itemName", book.getItemName());
         model.addAttribute("count", book.getCount());
@@ -85,6 +85,18 @@ public class ItemController {
             redirectAttributes.addFlashAttribute("message", "Item does not exist..");
         } else {
             itemManager.delete(i);
+        }
+        return "redirect:/items";
+    }
+
+    @RequestMapping(value = "book/del/{id}", method = RequestMethod.GET)
+    public String deleteBook(@PathVariable(value = "id") String id, Model model, RedirectAttributes redirectAttributes) {
+        Book i = bookManager.findOne(id);
+        if (i == null) {
+            redirectAttributes.addFlashAttribute("css", "error");
+            redirectAttributes.addFlashAttribute("message", "Item does not exist..");
+        } else {
+            bookManager.delete(i);
         }
         return "redirect:/items";
     }

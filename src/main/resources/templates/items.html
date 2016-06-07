@@ -127,12 +127,12 @@
                                     <td th:text="${itm.itemName}">itemName</td>
                                     <td th:text="${itm.count}">count</td>
                                     <td th:text="${itm.isbn}">count</td>
-                                    <td><a th:href="@{/items/del/{id}(id=${itm.id})}"><span class="fa fa-trash"></span></a></td>
+                                    <td><a th:href="@{/items/book/del/{id}(id=${itm.id})}"><span class="fa fa-trash"></span></a></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <form action="#" th:action="@{/items/addBook}" th:object="${bookSeed}" method="post" class="form" id="bookNameFormID">
+                        <form action="#" th:action="@{/items/book}" th:object="${bookSeed}" method="post" class="form" id="bookNameFormID">
                             <ul>
                                 <li th:each="err : ${#fields.errors('*')}" th:text="${err}">err</li>
                             </ul>

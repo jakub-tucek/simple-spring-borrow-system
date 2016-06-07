@@ -15,7 +15,7 @@ public class UserManager {
     @Autowired
     UserRepository userRepository;
 
-    List<User> findByLastName(String lastName) {
+    public List<User> findByLastName(String lastName) {
         return userRepository.findByLastName(lastName);
     }
 
@@ -23,15 +23,19 @@ public class UserManager {
         return userRepository.findAll();
     }
 
-    User findOne(String id) {
+    public User findOne(String id) {
         return userRepository.findOne(id);
     }
 
-    public User insert(User s) {
-        return userRepository.insert(s);
+    public User insert(User u) {
+        return userRepository.insert(u);
     }
 
     public void deleteAll() {
         userRepository.deleteAll();
+    }
+
+    public void delete(User u) {
+        userRepository.delete(u);
     }
 }
