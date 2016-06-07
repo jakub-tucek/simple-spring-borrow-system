@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:replace="__layout :: headerFragment">
+</head>
+<body>
+<div id="wrapper">
+    <!-- Navigation -->
+    <nav th:replace="__layout :: navFragment">
+    </nav>
+
+    <div id="page-wrapper">
+        <p>
+        <p th:text="${hello}"></p>
+        <p th:text="${users}"></p>
+        <table>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    RETARDED ID
+                </th>
+                <th>
+                    FIRST NAME
+                </th>
+                <th>
+                    LAST NAME
+                </th>
+            </tr>
+            <tr th:each="usr  : ${users}">
+                <td th:text="${usr}">001</td>
+
+                <td th:text="${usr.firstName}">Name</td>
+
+                <td th:text="${usr.lastName}">City</td>
+
+            </tr>
+        </table>
+        </p>
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<div th:replace="__layout :: footerScriptsFragment">
+</div>
+
+</body>
+
+</html>

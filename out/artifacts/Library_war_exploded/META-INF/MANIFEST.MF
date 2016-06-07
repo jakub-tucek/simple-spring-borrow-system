@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: Library
+Implementation-Version: 0.0.1
+Built-By: Xide
+Implementation-Vendor-Id: cvut.fit
+Created-By: IntelliJ IDEA
+Build-Jdk: 1.8.0_77
+Main-Class: ${start-class}
+
