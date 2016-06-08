@@ -25,8 +25,8 @@
         </plugins>
     </build>
 
-    <name>Order system</name>
-    <description>Order system for Spring Boot</description>
+    <name>Borrow system</name>
+    <description>Borrow system for Spring Boot</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

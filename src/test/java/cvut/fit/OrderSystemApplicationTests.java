@@ -1,6 +1,6 @@
 package cvut.fit;
 
-import cvut.fit.ordersystem.OrderSystemApplication;
+import cvut.fit.borrowsystem.OrderSystemApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
