@@ -9,11 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(
         exclude = {org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration.class})
-public class OrderSystemApplication {
-    private static final Logger log = LoggerFactory.getLogger(OrderSystemApplication.class);
+public class BorrowSystemApplication {
+    private static final Logger log = LoggerFactory.getLogger(BorrowSystemApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderSystemApplication.class, args);
+        SpringApplication.run(BorrowSystemApplication.class, args);
 
     }
 }

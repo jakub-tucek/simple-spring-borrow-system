@@ -1,6 +1,8 @@
 package cvut.fit.borrowsystem.service;
 
+import cvut.fit.borrowsystem.domain.ItemRepository;
 import cvut.fit.borrowsystem.domain.OrderRepository;
+import cvut.fit.borrowsystem.domain.entity.Book;
 import cvut.fit.borrowsystem.domain.entity.Item;
 import cvut.fit.borrowsystem.domain.entity.Order;
 import cvut.fit.borrowsystem.domain.entity.User;
@@ -21,6 +23,13 @@ public class OrderManager {
     @Autowired
     OrderRepository orderRepository;
 
+    @Autowired
+    ItemManager itemManager;
+
+    @Autowired
+    BookManager bookManager;
+
+
     public List<Order> findOrdersForUser(User user) {
         return orderRepository.findByUser(user);
     }
@@ -30,25 +39,43 @@ public class OrderManager {
         return null;
     }
 
+    /**
+     * Finds available items and books
+     * @return List of Items for borrowing
+     */
     public List<Item> findAvailableItems() {
         List<Order> notReturnedOrders = orderRepository.findByReturned(false);
         HashMap<Item, Integer> borrowedItems = new HashMap<Item, Integer>();
-        List<Item> availableItems = new ArrayList<Item>();
+        List<Item> allItems = itemManager.findAll();
+        List<Book> allBooks = bookManager.findAll();
+        List<Item> availableItems = new ArrayList<>();
 
-        for (Order o : notReturnedOrders) {
-            if (borrowedItems.containsKey(o.getItem())) {
-                Integer k = borrowedItems.get(o);
-                k++;
-                borrowedItems.put(o.getItem(), k);
-            } else {
-                borrowedItems.put(o.getItem(), 1);
+        for (Item i : allItems) {
+            long count = orderRepository.countBorrowedByItem(i,false);
+
+            if (i.getCount() > count) {
+                availableItems.add(i);
             }
         }
-
-        borrowedItems.forEach((k, v) -> {
-            if (k.getCount() < v) availableItems.add(k);
-        });
-
+        for (Book b : allBooks) {
+            long count = orderRepository.countBorrowedByItem(b,false);
+            if (b.getCount() > count) {
+                availableItems.add(b);
+            }
+        }
         return availableItems;
+    }
+
+    public List<Item> findBorrowedItems() {
+        List<Order> notReturnedOrders = orderRepository.findByReturned(false);
+        List<Item> borrowedItems = new ArrayList<>();
+        for (Order o : notReturnedOrders) {
+            borrowedItems.add(o.getItem());
+        }
+        return borrowedItems;
+    }
+
+    public List<Order> findActiveOrders() {
+        return orderRepository.findByReturned(false);
     }
 }
