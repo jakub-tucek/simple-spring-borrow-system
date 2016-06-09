@@ -78,16 +78,13 @@
                             <div class="form-group">
                                 <label for="itemId">Item: </label>
                                 <select class="form-control" th:field="*{item}" id="itemId" required>
-                                    <div th:each="itm : ${avaliableItems}">
-                                        <option th:value="${itm}"><span th:text="${itm.itemName}"></span></option>
-                                    </div>
+                                        <option th:each="itm : ${avaliableItems}" th:value="${itm}" th:text="${itm.itemName}"></option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" th:field="*{user}" id="itemId" required>
-                                    <div th:each="usr : ${users}">
-                                        <option th:value="${usr}"><span th:text="${usr.firstName + ' ' + usr.lastName}"></span></option>
-                                    </div>
+                                <label for="userId">User: </label>
+                                <select class="form-control" th:field="*{user}" id="userId" required>
+                                        <option th:each="usr : ${users}" th:value="${usr}" th:text="${usr.firstName + ' ' + usr.lastName}"></option>
                                 </select>
                             </div>
                         </form>
