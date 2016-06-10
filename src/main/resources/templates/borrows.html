@@ -49,11 +49,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="order,iterator  : ${orders}">
+                                <tr th:each="borrow,iterator  : ${borrows}">
                                     <td th:text="${iterator.count}">0</td>
-                                    <td th:text="${order.id}">001</td>
-                                    <td th:text="${order.item.itemName}">itemName</td>
-                                    <td th:text="${order.user.firstName + ' ' + order.user.lastName}">user name</td>
+                                    <td th:text="${borrow.id}">001</td>
+                                    <td th:text="${borrow.item.itemName}">itemName</td>
+                                    <td th:text="${borrow.user.firstName + ' ' + borrow.user.lastName}">user name</td>
                                     <td><!--<a th:href="@{/items/del/{id}(id=${itm.id})}"><span class="fa fa-trash"></span></a>--></td>
                                 </tr>
                                 </tbody>
@@ -67,10 +67,10 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Orders
+                        Borrow
                     </div>
                     <div class="panel-body">
-                        <form action="#" th:action="@{/orders}" th:object="${orderSeed}" method="post" class="form" id="orderNameFormID">
+                        <form action="#" th:action="@{/borrows}" th:object="${borrowSeed}" method="post" class="form" id="borrowForm">
                             <ul>
                                 <li th:each="err : ${#fields.errors('*')}" th:text="${err}">err</li>
                             </ul>

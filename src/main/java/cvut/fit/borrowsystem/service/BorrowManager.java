@@ -1,10 +1,9 @@
 package cvut.fit.borrowsystem.service;
 
-import cvut.fit.borrowsystem.domain.ItemRepository;
-import cvut.fit.borrowsystem.domain.OrderRepository;
+import cvut.fit.borrowsystem.domain.BorrowRepository;
 import cvut.fit.borrowsystem.domain.entity.Book;
+import cvut.fit.borrowsystem.domain.entity.Borrow;
 import cvut.fit.borrowsystem.domain.entity.Item;
-import cvut.fit.borrowsystem.domain.entity.Order;
 import cvut.fit.borrowsystem.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Order manager class.
+ * Borrow manager class.
  * Created by Jakub Tuček on 10.4.2016.
  */
 @Service
-public class OrderManager {
+public class BorrowManager {
 
     @Autowired
-    OrderRepository orderRepository;
+    BorrowRepository orderRepository;
 
     @Autowired
     ItemManager itemManager;
@@ -30,11 +29,11 @@ public class OrderManager {
     BookManager bookManager;
 
 
-    public List<Order> findOrdersForUser(User user) {
+    public List<Borrow> findOrdersForUser(User user) {
         return orderRepository.findByUser(user);
     }
 
-    public List<Order> findAvailableBooks() {
+    public List<Borrow> findAvailableBooks() {
 
         return null;
     }
@@ -45,7 +44,7 @@ public class OrderManager {
      * @return List of Items for borrowing
      */
     public List<Item> findAvailableItems() {
-        List<Order> notReturnedOrders = orderRepository.findByReturned(false);
+        List<Borrow> notReturnedBorrows = orderRepository.findByReturned(false);
         HashMap<Item, Integer> borrowedItems = new HashMap<Item, Integer>();
         List<Item> allItems = itemManager.findAll();
         List<Book> allBooks = bookManager.findAll();
@@ -68,19 +67,19 @@ public class OrderManager {
     }
 
     public List<Item> findBorrowedItems() {
-        List<Order> notReturnedOrders = orderRepository.findByReturned(false);
+        List<Borrow> notReturnedBorrows = orderRepository.findByReturned(false);
         List<Item> borrowedItems = new ArrayList<>();
-        for (Order o : notReturnedOrders) {
+        for (Borrow o : notReturnedBorrows) {
             borrowedItems.add(o.getItem());
         }
         return borrowedItems;
     }
 
-    public List<Order> findActiveOrders() {
+    public List<Borrow> findActiveOrders() {
         return orderRepository.findByReturned(false);
     }
 
-    public void insert(Order order) {
-        orderRepository.insert(order);
+    public void insert(Borrow borrow) {
+        orderRepository.insert(borrow);
     }
 }

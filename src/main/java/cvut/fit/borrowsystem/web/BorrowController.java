@@ -1,9 +1,8 @@
 package cvut.fit.borrowsystem.web;
 
 import cvut.fit.borrowsystem.domain.entity.Item;
-import cvut.fit.borrowsystem.domain.entity.Order;
-import cvut.fit.borrowsystem.service.BookManager;
-import cvut.fit.borrowsystem.service.OrderManager;
+import cvut.fit.borrowsystem.domain.entity.Borrow;
+import cvut.fit.borrowsystem.service.BorrowManager;
 import cvut.fit.borrowsystem.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +23,12 @@ import java.util.List;
  * Created by Jakub Tuček on 10.4.2016.
  */
 @Controller
-@RequestMapping("/orders")
-public class OrderController {
-    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
+@RequestMapping("/borrows")
+public class BorrowController {
+    private static final Logger log = LoggerFactory.getLogger(BorrowController.class);
 
     @Autowired
-    OrderManager orderManager;
+    BorrowManager orderManager;
 
     @Autowired
     UserManager userManager;
@@ -40,39 +39,39 @@ public class OrderController {
         // itemManager.insert(new Item("Super cool test item", 55));
         model.addAttribute("avaliableItems", orderManager.findAvailableItems());
 
-        model.addAttribute("orders", orderManager.findActiveOrders());
+        model.addAttribute("borrows", orderManager.findActiveOrders());
         model.addAttribute("users", userManager.findAll());
-        model.addAttribute("orderSeed", new Order());
+        model.addAttribute("borrowSeed", new Borrow());
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String borrowItem(@ModelAttribute("orderSeed") Order order, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    public String borrowItem(@ModelAttribute("orderSeed") Borrow borrow, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         List<Item> availableItems = orderManager.findAvailableItems();
-        if (availableItems.contains(order.getItem())) {
+        if (availableItems.contains(borrow.getItem())) {
             redirectAttributes.addFlashAttribute("type", "error");
             redirectAttributes.addFlashAttribute("message", "Item not available.");
         } else {
             redirectAttributes.addFlashAttribute("type", "success");
             redirectAttributes.addFlashAttribute("message", "Successfully borrowed.");
-            if (order.getUser() == null || order.getItem() == null) {
+            if (borrow.getUser() == null || borrow.getItem() == null) {
                 System.out.println("item or user not set");
-                System.out.println(order.getUser());
-                System.out.println(order.getItem());
+                System.out.println(borrow.getUser());
+                System.out.println(borrow.getItem());
             } else {
 
-                orderManager.insert(order);
+                orderManager.insert(borrow);
             }
         }
 
 
-        return "redirect:/orders";
+        return "redirect:/borrows";
     }
 
-    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-    public String getOrdersForUser(@PathVariable(value = "userId") String userId, Model model, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/borrows/{orderId}", method = RequestMethod.GET)
+    public String getOrdersForUser(@PathVariable(value = "borrowId") Borrow borrow, Model model, RedirectAttributes redirectAttributes) {
 
 
-        return "redirect:/orders";
+        return "redirect:/borrows";
     }
 
 }

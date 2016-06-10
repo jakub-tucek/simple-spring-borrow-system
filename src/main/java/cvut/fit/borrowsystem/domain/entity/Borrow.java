@@ -5,11 +5,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Order entity
+ * Borrow entity
  * Created by Jakub Tuček on 04/04/16.
  */
 @Document
-public class Order {
+public class Borrow {
 
     @Id
     private String id;
@@ -22,10 +22,10 @@ public class Order {
 
     private boolean returned = false;
 
-    public Order() {
+    public Borrow() {
     }
 
-    public Order(Item item, User user) {
+    public Borrow(Item item, User user) {
         this.item = item;
         this.user = user;
     }

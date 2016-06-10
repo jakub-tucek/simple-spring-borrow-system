@@ -1,2 +1,2 @@
-# simple-spring-order-system
-Simple order system with users in Spring
+# simple-spring-borrow-system
+Simple borrow system with users in Spring
