@@ -41,6 +41,7 @@ public class OrderManager {
 
     /**
      * Finds available items and books
+     *
      * @return List of Items for borrowing
      */
     public List<Item> findAvailableItems() {
@@ -51,14 +52,14 @@ public class OrderManager {
         List<Item> availableItems = new ArrayList<>();
 
         for (Item i : allItems) {
-            long count = orderRepository.countBorrowedByItem(i,false);
+            long count = orderRepository.countBorrowedByItem(i, false);
 
             if (i.getCount() > count) {
                 availableItems.add(i);
             }
         }
         for (Book b : allBooks) {
-            long count = orderRepository.countBorrowedByItem(b,false);
+            long count = orderRepository.countBorrowedByItem(b, false);
             if (b.getCount() > count) {
                 availableItems.add(b);
             }
@@ -77,5 +78,9 @@ public class OrderManager {
 
     public List<Order> findActiveOrders() {
         return orderRepository.findByReturned(false);
+    }
+
+    public void insert(Order order) {
+        orderRepository.insert(order);
     }
 }

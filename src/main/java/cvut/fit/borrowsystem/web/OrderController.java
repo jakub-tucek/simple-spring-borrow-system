@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 /**
  * Controller for borrowing and returning items.
  * Created by Jakub Tuček on 10.4.2016.
@@ -45,14 +47,32 @@ public class OrderController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String borrowItem(@ModelAttribute("orderSeed") Order order, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        return "orders";
+        List<Item> availableItems = orderManager.findAvailableItems();
+        if (availableItems.contains(order.getItem())) {
+            redirectAttributes.addFlashAttribute("type", "error");
+            redirectAttributes.addFlashAttribute("message", "Item not available.");
+        } else {
+            redirectAttributes.addFlashAttribute("type", "success");
+            redirectAttributes.addFlashAttribute("message", "Successfully borrowed.");
+            if (order.getUser() == null || order.getItem() == null) {
+                System.out.println("item or user not set");
+                System.out.println(order.getUser());
+                System.out.println(order.getItem());
+            } else {
+
+                orderManager.insert(order);
+            }
+        }
+
+
+        return "redirect:/orders";
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
     public String getOrdersForUser(@PathVariable(value = "userId") String userId, Model model, RedirectAttributes redirectAttributes) {
 
 
-        return "ordersUser";
+        return "redirect:/orders";
     }
 
 }

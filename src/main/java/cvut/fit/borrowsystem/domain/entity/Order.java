@@ -1,6 +1,7 @@
 package cvut.fit.borrowsystem.domain.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -13,8 +14,10 @@ public class Order {
     @Id
     private String id;
 
+    @DBRef
     private Item item;
 
+    @DBRef
     private User user;
 
     private boolean returned = false;
