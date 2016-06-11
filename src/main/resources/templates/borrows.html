@@ -26,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Orders
+                        Items currently in possesion of someone else
                     </div>
                     <div class="panel-body">
                         <div class="dataTable_wrapper">
@@ -54,7 +54,7 @@
                                     <td th:text="${borrow.id}">001</td>
                                     <td th:text="${borrow.item.itemName}">itemName</td>
                                     <td th:text="${borrow.user.firstName + ' ' + borrow.user.lastName}">user name</td>
-                                    <td><!--<a th:href="@{/items/del/{id}(id=${itm.id})}"><span class="fa fa-trash"></span></a>--></td>
+                                    <td><a th:href="@{/borrows/return/{id}(id=${borrow.id})}"><span class="fa fa-arrow-right"></span></a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -78,7 +78,7 @@
                             <div class="form-group">
                                 <label for="itemId">Item: </label>
                                 <select class="form-control" th:field="*{item}" id="itemId" required>
-                                        <option th:each="itm : ${avaliableItems}" th:value="${itm.id}" th:text="${itm.itemName}"></option>
+                                        <option th:each="itm : ${availableItems}" th:value="${itm.id}" th:text="${itm.itemName}"></option>
                                 </select>
                             </div>
                             <div class="form-group">

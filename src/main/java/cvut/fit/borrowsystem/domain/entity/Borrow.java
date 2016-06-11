@@ -41,9 +41,13 @@ public class Borrow {
     public Item getItem() {
         return item;
     }
-
+    
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public void setItem(Book book) {
+        this.item = book;
     }
 
     public User getUser() {

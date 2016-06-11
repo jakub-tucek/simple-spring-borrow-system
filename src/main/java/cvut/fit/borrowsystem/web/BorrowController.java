@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Controller for borrowing and returning items.
@@ -28,7 +29,7 @@ public class BorrowController {
     private static final Logger log = LoggerFactory.getLogger(BorrowController.class);
 
     @Autowired
-    BorrowManager orderManager;
+    BorrowManager borrowManager;
 
     @Autowired
     UserManager userManager;
@@ -37,29 +38,38 @@ public class BorrowController {
     public void getItems(Model model) {
         // itemManager.deleteAll();
         // itemManager.insert(new Item("Super cool test item", 55));
-        model.addAttribute("avaliableItems", orderManager.findAvailableItems());
+        model.addAttribute("availableItems", borrowManager.findAvailableItems());
 
-        model.addAttribute("borrows", orderManager.findActiveOrders());
+        model.addAttribute("borrows", borrowManager.findActiveOrders());
         model.addAttribute("users", userManager.findAll());
         model.addAttribute("borrowSeed", new Borrow());
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public String borrowItem(@ModelAttribute("orderSeed") Borrow borrow, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        List<Item> availableItems = orderManager.findAvailableItems();
-        if (availableItems.contains(borrow.getItem())) {
+    public String borrowItem(@ModelAttribute("borrowSeed") Borrow borrow, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        List<Item> availableItems = borrowManager.findAvailableItems();
+
+        boolean itemFound = false;
+        if (borrow.getItem() == null) {
+            log.error("item  not set");
+            return "redirect:/borrows";
+        }
+        for (Item o : availableItems) {
+            if (Objects.equals(o.getId(), borrow.getItem().getId())) {
+                itemFound = true;
+                break;
+            }
+        }
+        if (!itemFound) {
             redirectAttributes.addFlashAttribute("type", "error");
             redirectAttributes.addFlashAttribute("message", "Item not available.");
         } else {
             redirectAttributes.addFlashAttribute("type", "success");
             redirectAttributes.addFlashAttribute("message", "Successfully borrowed.");
             if (borrow.getUser() == null || borrow.getItem() == null) {
-                System.out.println("item or user not set");
-                System.out.println(borrow.getUser());
-                System.out.println(borrow.getItem());
+                log.error("item or user not set");
             } else {
-
-                orderManager.insert(borrow);
+                borrowManager.insert(borrow);
             }
         }
 
@@ -67,10 +77,21 @@ public class BorrowController {
         return "redirect:/borrows";
     }
 
-    @RequestMapping(value = "/borrows/{orderId}", method = RequestMethod.GET)
-    public String getOrdersForUser(@PathVariable(value = "borrowId") Borrow borrow, Model model, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/return/{borrowId}", method = RequestMethod.GET)
+    public String returnItem(@PathVariable(value = "borrowId") String borrowId, Model model, RedirectAttributes redirectAttributes) {
+        Borrow o = borrowManager.findOne(borrowId);
 
+        System.out.println("returning item");
 
+        if (o == null || o.isReturned()) {
+            redirectAttributes.addFlashAttribute("type", "error");
+            redirectAttributes.addFlashAttribute("message", "Item doesnt exist or was borrowed.");
+        } else {
+            o.setReturned(true);
+            borrowManager.save(o);
+            redirectAttributes.addFlashAttribute("type", "success");
+            redirectAttributes.addFlashAttribute("message", "Item was returned.");
+        }
         return "redirect:/borrows";
     }
 

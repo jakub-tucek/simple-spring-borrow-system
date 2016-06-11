@@ -20,7 +20,7 @@ import java.util.List;
 public class BorrowManager {
 
     @Autowired
-    BorrowRepository orderRepository;
+    BorrowRepository borrowRepository;
 
     @Autowired
     ItemManager itemManager;
@@ -30,7 +30,7 @@ public class BorrowManager {
 
 
     public List<Borrow> findOrdersForUser(User user) {
-        return orderRepository.findByUser(user);
+        return borrowRepository.findByUser(user);
     }
 
     public List<Borrow> findAvailableBooks() {
@@ -44,30 +44,24 @@ public class BorrowManager {
      * @return List of Items for borrowing
      */
     public List<Item> findAvailableItems() {
-        List<Borrow> notReturnedBorrows = orderRepository.findByReturned(false);
+        List<Borrow> notReturnedBorrows = borrowRepository.findByReturned(false);
         HashMap<Item, Integer> borrowedItems = new HashMap<Item, Integer>();
         List<Item> allItems = itemManager.findAll();
         List<Book> allBooks = bookManager.findAll();
         List<Item> availableItems = new ArrayList<>();
 
         for (Item i : allItems) {
-            long count = orderRepository.countBorrowedByItem(i, false);
+            long count = borrowRepository.countBorrowedByItem(i, false);
 
             if (i.getCount() > count) {
                 availableItems.add(i);
-            }
-        }
-        for (Book b : allBooks) {
-            long count = orderRepository.countBorrowedByItem(b, false);
-            if (b.getCount() > count) {
-                availableItems.add(b);
             }
         }
         return availableItems;
     }
 
     public List<Item> findBorrowedItems() {
-        List<Borrow> notReturnedBorrows = orderRepository.findByReturned(false);
+        List<Borrow> notReturnedBorrows = borrowRepository.findByReturned(false);
         List<Item> borrowedItems = new ArrayList<>();
         for (Borrow o : notReturnedBorrows) {
             borrowedItems.add(o.getItem());
@@ -76,10 +70,19 @@ public class BorrowManager {
     }
 
     public List<Borrow> findActiveOrders() {
-        return orderRepository.findByReturned(false);
+        return borrowRepository.findByReturned(false);
     }
 
     public void insert(Borrow borrow) {
-        orderRepository.insert(borrow);
+        borrowRepository.insert(borrow);
     }
+
+    public Borrow findOne(String borrowId) {
+        return borrowRepository.findOne(borrowId);
+    }
+
+    public void save(Borrow borrow) {
+        borrowRepository.save(borrow);
+    }
+
 }

@@ -68,6 +68,7 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
         registry.addViewController("").setViewName("home");
         registry.addViewController("/users").setViewName("user");
         registry.addViewController("/items").setViewName("item");
+        registry.addViewController("/borrows").setViewName("borrow");
       /*  registry.addViewController("/hello").setViewName("hello");
         registry.addViewController("/login").setViewName("login");*/
     }

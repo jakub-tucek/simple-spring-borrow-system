@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * Created by Jakub Tuček on 03/06/16.
  */
-@Document
+@Document(collection = "item")
 public class Book extends Item {
 
     private int isbn;
