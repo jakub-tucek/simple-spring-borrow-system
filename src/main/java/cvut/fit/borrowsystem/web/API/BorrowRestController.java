@@ -5,10 +5,9 @@ import cvut.fit.borrowsystem.service.BorrowManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -22,8 +21,14 @@ public class BorrowRestController {
     @Autowired
     BorrowManager borrowManager;
 
-    @RequestMapping("getActive")
-    public List<Borrow> getActiveBorrows() {
+    @RequestMapping(value = "getActive", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Borrow> getActiveBorrows(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+
         return borrowManager.findActiveOrders();
     }
 }
