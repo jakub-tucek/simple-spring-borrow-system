@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
@@ -71,5 +72,11 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
         registry.addViewController("/borrows").setViewName("borrow");
       /*  registry.addViewController("/hello").setViewName("hello");
         registry.addViewController("/login").setViewName("login");*/
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        super.addCorsMappings(registry);
+        registry.addMapping("/api/borrows/getActive").allowedOrigins("*");
     }
 }
