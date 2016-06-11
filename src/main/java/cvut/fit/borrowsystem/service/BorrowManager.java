@@ -5,6 +5,8 @@ import cvut.fit.borrowsystem.domain.entity.Book;
 import cvut.fit.borrowsystem.domain.entity.Borrow;
 import cvut.fit.borrowsystem.domain.entity.Item;
 import cvut.fit.borrowsystem.domain.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @Service
 public class BorrowManager {
+    private static final Logger log = LoggerFactory.getLogger(BorrowManager.class);
 
     @Autowired
     BorrowRepository borrowRepository;
@@ -51,8 +54,8 @@ public class BorrowManager {
         List<Item> availableItems = new ArrayList<>();
 
         for (Item i : allItems) {
-            long count = borrowRepository.countBorrowedByItem(i, false);
-
+            long count = borrowRepository.countBorrowedByItemAndReturned(i,false);
+//            log.info(borrows.toString());
             if (i.getCount() > count) {
                 availableItems.add(i);
             }

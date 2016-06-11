@@ -19,6 +19,8 @@ public interface BorrowRepository extends MongoRepository<Borrow, String> {
 
     List<Borrow> findByReturned(@Param("returned") boolean returned);
 
-    Long countBorrowedByItem(@Param("item") Item item, @Param("returned") boolean returned);
+    List<Borrow> findByItemAndReturned(@Param("item") Item item, @Param("returned") boolean returned);
+
+    Long countBorrowedByItemAndReturned(@Param("item") Item item, @Param("returned") boolean returned);
 
 }
