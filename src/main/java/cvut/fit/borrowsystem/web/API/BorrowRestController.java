@@ -1,7 +1,10 @@
 package cvut.fit.borrowsystem.web.API;
 
 import cvut.fit.borrowsystem.domain.entity.Borrow;
+import cvut.fit.borrowsystem.domain.entity.Item;
 import cvut.fit.borrowsystem.service.BorrowManager;
+import cvut.fit.borrowsystem.service.ItemManager;
+import cvut.fit.borrowsystem.service.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +25,17 @@ public class BorrowRestController {
     BorrowManager borrowManager;
 
     @RequestMapping(value = "getActive", method = RequestMethod.GET)
-    public List<Borrow> getActiveBorrows(HttpServletResponse response) {
+    public List<Borrow> getActiveBorrows() {
         List<Borrow> borrows = borrowManager.findActiveBorrows();
         for (Borrow b : borrows) {
             b.getUser().setPassword("-");
         }
-        return borrowManager.findActiveBorrows();
+        return borrows;
     }
+
+    @RequestMapping(value = "getAvailableItems", method = RequestMethod.GET)
+    public List<Item> getAvailableItems() {
+        return borrowManager.findAvailableItems();
+    }
+
 }
