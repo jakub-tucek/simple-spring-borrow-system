@@ -40,7 +40,7 @@ public class BorrowController {
         // itemManager.insert(new Item("Super cool test item", 55));
         model.addAttribute("availableItems", borrowManager.findAvailableItems());
 
-        model.addAttribute("borrows", borrowManager.findActiveOrders());
+        model.addAttribute("borrows", borrowManager.findActiveBorrows());
         model.addAttribute("users", userManager.findAll());
         model.addAttribute("borrowSeed", new Borrow());
     }

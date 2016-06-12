@@ -72,7 +72,7 @@ public class BorrowManager {
         return borrowedItems;
     }
 
-    public List<Borrow> findActiveOrders() {
+    public List<Borrow> findActiveBorrows() {
         return borrowRepository.findByReturned(false);
     }
 

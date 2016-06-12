@@ -23,6 +23,10 @@ public class BorrowRestController {
 
     @RequestMapping(value = "getActive", method = RequestMethod.GET)
     public List<Borrow> getActiveBorrows(HttpServletResponse response) {
-        return borrowManager.findActiveOrders();
+        List<Borrow> borrows = borrowManager.findActiveBorrows();
+        for (Borrow b : borrows) {
+            b.getUser().setPassword("-");
+        }
+        return borrowManager.findActiveBorrows();
     }
 }
