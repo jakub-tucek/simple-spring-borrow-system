@@ -24,7 +24,7 @@ public class UserRestController {
     UserManager userManager;
 
 
-    @RequestMapping(value = "getSafeUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "all", method = RequestMethod.GET)
     public List<User> getSafeUsers() {
         List<User> users = userManager.findAll();
         for (User u : users) {
